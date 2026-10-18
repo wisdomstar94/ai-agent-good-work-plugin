@@ -18,7 +18,7 @@
 | 스킬 | 언제 적용되나 |
 | --- | --- |
 | `korean-language-skill` | 항상. 터미널 응답 · 질문 프롬프트 · 모든 산출물을 한국어로 작성 (세션 시작 훅으로 자동 주입) |
-| `work-skill` | 어떤 작업이든 시작하기 전. 작업계획서 작성 → 컨펌 → 작업 → 완료 보고 |
+| `work-skill` | 어떤 작업이든 시작하기 전. 작업계획서 작성 → 승인 → 작업 → 완료 보고 |
 | `question-skill` | 사용자에게 질문하거나 승인을 받을 때. 질문 프롬프트와 추천 선택지 사용 |
 | `code-splitting-skill` | 코드를 편집할 때. 카테고리 폴더 · 200줄 기준 분리 · 배럴 익스포트 제한 |
 | `code-comment-skill` | 주석을 추가 · 수정할 때. 주석 지양 · 로컬 PC 종속 내용 금지 |
@@ -53,17 +53,21 @@ codex plugin add good-work@ai-agent-good-work
 
 ```text
 .claude-plugin/
-  ㄴ plugin.json        # Claude Code 플러그인 매니페스트
-  ㄴ marketplace.json   # Claude Code 마켓플레이스
+├─ plugin.json        # Claude Code 플러그인 매니페스트
+└─ marketplace.json   # Claude Code 마켓플레이스
 .codex-plugin/
-  ㄴ plugin.json        # Codex 플러그인 매니페스트
+└─ plugin.json        # Codex 플러그인 매니페스트
 .agents/plugins/
-  ㄴ marketplace.json   # Codex 마켓플레이스
+└─ marketplace.json   # Codex 마켓플레이스
 hooks/
-  ㄴ hooks.json         # SessionStart 훅 등록 (두 에이전트 공용)
-  ㄴ session-start.sh   # 언어 규칙 스킬 본문을 컨텍스트로 주입
-skills/                 # 두 에이전트가 공유하는 스킬 (SKILL.md)
+├─ hooks.json         # SessionStart 훅 등록 (두 에이전트 공용)
+└─ session-start.sh   # 언어 규칙 스킬 본문을 컨텍스트로 주입
+skills/               # 두 에이전트가 공유하는 스킬 (SKILL.md)
 ```
 
-- 스킬을 추가할 때는 `skills/<스킬명>/SKILL.md` 에 `name` · `description` 프론트매터를 넣으면 됩니다. 스킬을 불러오는 데는 매니페스트를 고칠 필요가 없지만, 스킬 목록을 나열한 설명 문구(`.claude-plugin/plugin.json` · `.claude-plugin/marketplace.json` 의 `description`, `.codex-plugin/plugin.json` 의 `description` · `longDescription`)와 이 README 의 `포함된 스킬` 표는 함께 갱신하세요.
+- 스킬을 추가할 때는 `skills/<스킬명>/SKILL.md` 에 `name` · `description` 프론트매터를 넣으면 됩니다. 스킬을 불러오는 데는 매니페스트를 고칠 필요가 없습니다.
+- 다만 스킬 목록을 나열한 아래 문구는 함께 갱신하세요.
+  - `.claude-plugin/plugin.json` · `.claude-plugin/marketplace.json` 의 `description`
+  - `.codex-plugin/plugin.json` 의 `description` · `longDescription`
+  - 이 README 의 `포함된 스킬` 표
 - 버전을 올릴 때는 `.claude-plugin/plugin.json` · `.claude-plugin/marketplace.json` · `.codex-plugin/plugin.json` 세 곳의 `version` 을 함께 바꿉니다.

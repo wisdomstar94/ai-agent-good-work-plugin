@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh \"${CLAUDE_PLUGIN_ROOT:-$PLUGIN_ROOT}/hooks/session-start.sh\"",
+            "command": "ROOT=\"${CLAUDE_PLUGIN_ROOT:-$PLUGIN_ROOT}\"; [ -n \"$ROOT\" ] || exit 0; sh \"$ROOT/hooks/session-start.sh\"",
             "timeout": 10
           }
         ]
