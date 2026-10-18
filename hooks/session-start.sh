@@ -7,7 +7,7 @@ RULE_FILE="$PLUGIN_ROOT/skills/korean-language-skill/SKILL.md"
 # 스킬과 같은 파일을 정본으로 쓰기 위해 프론트매터를 떼고 본문만 주입한다.
 CONTEXT=$(awk '
   NR == 1 && /^---$/ { in_front = 1; next }
-  in_front && /^---$/ { in_front = 0; started = 0; next }
+  in_front && /^---$/ { in_front = 0; next }
   in_front { next }
   !started && /^$/ { next }
   {

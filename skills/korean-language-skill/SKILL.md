@@ -1,6 +1,6 @@
 ---
 name: korean-language-skill
-description: 터미널 응답, 질문 프롬프트, 작업계획서·보고서·README·HTML 등 모든 산출물을 작성할 때 항상 적용되어야 하는 언어 규칙 스킬입니다.
+description: 터미널 응답, 질문 프롬프트, 작업계획서 · 보고서 · README · HTML 등 모든 산출물을 작성할 때 항상 적용하는 언어 규칙 스킬입니다.
 ---
 
 # 언어 규칙
