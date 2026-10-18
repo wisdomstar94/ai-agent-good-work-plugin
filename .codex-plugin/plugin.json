@@ -6,6 +6,7 @@
     "name": "wisdomstar94"
   },
   "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
   "interface": {
     "displayName": "Good Work",
     "shortDescription": "작업계획서·질문·코드 컨벤션 규칙",
