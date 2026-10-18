@@ -1,0 +1,10 @@
+{
+  "name": "good-work",
+  "description": "작업계획서 우선 · 질문 프롬프트 · 코드 분리 · 주석 · HTML 산출물 규칙을 담은 작업 규칙 스킬 모음",
+  "version": "1.0.0",
+  "author": {
+    "name": "wisdomstar94"
+  },
+  "license": "MIT",
+  "keywords": ["work-plan", "convention", "skills"]
+}

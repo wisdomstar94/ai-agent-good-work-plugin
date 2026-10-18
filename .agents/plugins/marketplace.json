@@ -1,0 +1,20 @@
+{
+  "name": "ai-agent-good-work",
+  "interface": {
+    "displayName": "AI Agent Good Work"
+  },
+  "plugins": [
+    {
+      "name": "good-work",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "ai-agent-good-work",
+  "owner": {
+    "name": "wisdomstar94"
+  },
+  "metadata": {
+    "description": "에이전트가 일을 잘하도록 돕는 작업 규칙 스킬 마켓플레이스"
+  },
+  "plugins": [
+    {
+      "name": "good-work",
+      "source": "./",
+      "description": "작업계획서 우선 · 질문 프롬프트 · 코드 분리 · 주석 · HTML 산출물 규칙을 담은 작업 규칙 스킬 모음",
+      "version": "1.0.0"
+    }
+  ]
+}
