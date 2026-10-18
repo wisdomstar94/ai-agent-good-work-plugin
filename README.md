@@ -10,7 +10,9 @@
 - [포함된 스킬](#포함된-스킬)
 - [자동 로드되는 언어 규칙](#자동-로드되는-언어-규칙)
 - [Claude Code 에서 설치](#claude-code-에서-설치)
+  - [리로드 · 재설치](#리로드--재설치)
 - [Codex 에서 설치](#codex-에서-설치)
+  - [리로드 · 재설치](#리로드--재설치-1)
 - [저장소 구조](#저장소-구조)
 
 ## 포함된 스킬
@@ -42,12 +44,42 @@
 /plugin install good-work@ai-agent-good-work
 ```
 
+### 리로드 · 재설치
+
+스킬이나 훅을 고친 뒤에는 마켓플레이스를 갱신하고 플러그인을 다시 불러옵니다.
+
+```text
+/plugin marketplace update ai-agent-good-work
+/reload-plugins
+```
+
+반영되지 않으면 플러그인을 지우고 다시 설치합니다.
+
+```text
+/plugin uninstall good-work@ai-agent-good-work
+/plugin install good-work@ai-agent-good-work
+```
+
+- 터미널에서는 `claude plugin marketplace update ai-agent-good-work` · `claude plugin update good-work@ai-agent-good-work` 로 갱신할 수 있으며, 이 경우 Claude Code 를 재시작해야 적용됩니다.
+
 ## Codex 에서 설치
 
 ```bash
 codex plugin marketplace add <이 저장소의 로컬 경로 또는 GitHub owner/repo>
 codex plugin add good-work@ai-agent-good-work
 ```
+
+### 리로드 · 재설치
+
+Codex 는 실행 중에 플러그인을 다시 불러오지 않으므로, 플러그인을 지우고 다시 설치한 뒤 `codex` 를 새로 실행합니다.
+
+```bash
+codex plugin marketplace upgrade ai-agent-good-work   # Git 마켓플레이스일 때만 필요
+codex plugin remove good-work@ai-agent-good-work
+codex plugin add good-work@ai-agent-good-work
+```
+
+- 훅 정의가 바뀌었다면 `/hooks` 에서 `SessionStart` 훅을 다시 신뢰 처리해야 할 수 있습니다.
 
 ## 저장소 구조
 
