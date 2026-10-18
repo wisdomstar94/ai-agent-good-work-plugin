@@ -1,7 +1,7 @@
 {
   "name": "good-work",
   "version": "1.0.0",
-  "description": "작업계획서 우선 · 질문 프롬프트 · 코드 분리 · 주석 · HTML 산출물 규칙을 담은 작업 규칙 스킬 모음",
+  "description": "작업계획서 우선 · 질문 프롬프트 · 코드 분리 · 주석 · 코드 리뷰 · 변경점 설명서 · HTML 산출물 규칙을 담은 작업 규칙 스킬 모음",
   "author": {
     "name": "wisdomstar94"
   },
@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "Good Work",
     "shortDescription": "작업계획서·질문·코드 컨벤션 규칙",
-    "longDescription": "작업 전 작업계획서 작성과 컨펌, 질문 프롬프트로 선택지 제시, 200줄 기준 코드 분리, 주석 지양, 단일 HTML 산출물 규격 등 에이전트가 일을 잘하도록 돕는 작업 규칙 스킬 모음입니다.",
+    "longDescription": "작업 전 작업계획서 작성과 컨펌, 질문 프롬프트로 선택지 제시, 200줄 기준 코드 분리, 주석 지양, HTML 코드 리뷰 결과서와 변경점 설명서, 단일 HTML 산출물 규격 등 에이전트가 일을 잘하도록 돕는 작업 규칙 스킬 모음입니다.",
     "developerName": "wisdomstar94",
     "category": "Productivity",
     "capabilities": [
