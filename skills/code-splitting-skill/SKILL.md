@@ -86,6 +86,7 @@ src/components/
 | --- | --- | --- |
 | 컴포넌트 | `_components/` | `src/components/` |
 | 훅 | `_hooks/` | `src/hooks/` |
+| React Context | `_contexts/` | `src/contexts/` |
 | 함수 | `_utils/` | `src/utils/` |
 | 클래스 | `_classes/` | `src/classes/` |
 | 상수 | `_consts/` | `src/consts/` |
@@ -116,7 +117,7 @@ share-link-form-modal/
 - 라이브러리 패키지처럼 `_` 로 시작하는 폴더를 외부에 공개하지 않는 구조라면, 다른 패키지가 쓰는 선언은 `_<종류>/` 가 아니라 공개되는 `<종류>/` 폴더(예: `consts/` · `types/`)에 둡니다.
 - 아래는 분리 대상이 아닙니다.
   - Next.js 의 `metadata` · `config` 처럼 프레임워크가 그 파일에서 export 하도록 요구하는 값
-  - router · DB 연결 · React context 처럼 그 파일의 주인공을 만들기 위해 모듈에 하나만 있어야 하는 런타임 객체
+  - router · DB 연결처럼 그 파일의 주인공을 만들기 위해 모듈에 하나만 있어야 하는 런타임 객체
   - 마이그레이션처럼 작성 시점의 스냅샷이어야 하는 파일 안의 선언
 
 ## 상수 · 타입에서 뽑은 별칭을 만들지 마세요
@@ -167,3 +168,19 @@ src/functions/
   ㄴ my-function-2/...
   ㄴ index.ts <-- ❌ 여러 카테고리 폴더를 모아 내보내는 것 금지
 ```
+
+카테고리 폴더 자신의 `index.ts` 는 주인공과 함께 써야 하는 짝을 자기 서브 카테고리에서 다시 export 할 수 있습니다. 예를 들어 Provider 와 짝 훅은 사용처가 Provider 경로 하나로 둘 다 가져오게 합니다. 둘이 함께 쓰는 Context 는 export 하지 않아 Provider · 훅으로만 접근하게 합니다.
+
+```text
+src/providers/
+  ㄴ toast-provider/
+    ㄴ _contexts/
+      ㄴ toast-context/ <-- toast-provider.tsx 와 use-toast 가 함께 쓴다. 바깥으로 export 하지 않는다.
+    ㄴ _hooks/
+      ㄴ use-toast/
+    ㄴ index.ts <-- ✅ export * from "./toast-provider"; export * from "./_hooks/use-toast";
+    ㄴ toast-provider.tsx
+```
+
+- 짝이 아닌 서브 카테고리(그 카테고리 안에서만 쓰는 `_utils/` 등)는 다시 export 하지 않습니다.
+- 다시 export 한 서브 카테고리 파일은 `index.ts` 를 통해 바깥에서도 쓰이므로, Next.js 처럼 서버 · 클라이언트 경계가 있는 환경에서는 그 파일에도 경계 지시어(`"use client"` 등)를 붙입니다.
