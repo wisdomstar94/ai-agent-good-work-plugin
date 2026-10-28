@@ -52,10 +52,11 @@ components/
 
 200줄 분리와 상관없이, 새로 만드는 코드는 모두 아래 기준으로 위치를 정합니다.
 
-- **한 곳에서만 쓰는 코드** 는 사용처와 같은 경로의 `_components/` · `_utils/` · `_hooks/` 등 그룹핑 폴더 밑에 카테고리 폴더로 둡니다.
-- **두 곳 이상에서 쓰는 코드** 는 사용처들의 **공통 상위 경로** 의 그룹핑 폴더 밑에 둡니다.
-- 공통 상위 경로가 앱 전체(예: Next.js 의 `src/app/`)일 때만 `src/components/` · `src/utils/` · `src/hooks/` 같은 공용 폴더에 둡니다.
-- 사용처에는 카테고리 폴더뿐 아니라 **라우트 폴더**(Next.js app router 의 `page.tsx` · `layout.tsx` 가 있는 폴더 등)도 포함됩니다.
+- **사용처** 는 그 코드를 가져다 쓰는 카테고리 폴더 또는 **라우트 폴더**(Next.js app router 의 `page.tsx` · `layout.tsx` 가 있는 폴더 등)입니다.
+  - 한 카테고리 폴더 · 라우트 폴더 안의 서브 카테고리 폴더에서 쓰는 것은 같은 사용처로 봅니다.
+  - 하위 라우트 폴더(예: `new/` · `[groupId]/`)는 상위 라우트 폴더와 별개의 사용처입니다.
+- **사용처가 한 곳인 코드** 는 그 사용처의 `_components/` · `_utils/` · `_hooks/` 등 그룹핑 폴더 밑에 카테고리 폴더로 둡니다.
+- **사용처가 두 곳 이상인 코드** 는 `src/components/` · `src/utils/` · `src/hooks/` 같은 공용 폴더에 둡니다.
 - 사용처가 늘거나 줄어 기준이 바뀌면, 그 작업에서 코드를 맞는 경로로 옮깁니다.
 
 ```text
@@ -64,16 +65,17 @@ src/app/(auth-required)/access-policy-groups/
     ㄴ access-policy-groups-screen/ <-- 이 폴더의 page.tsx 에서만 쓰므로 여기에 둠.
       ㄴ index.ts
       ㄴ access-policy-groups-screen.tsx
-    ㄴ access-policy-group-editor/ <-- new/page.tsx 와 [groupId]/page.tsx 에서 쓰므로 공통 상위인 여기에 둠.
-      ㄴ index.ts
-      ㄴ access-policy-group-editor.tsx
   ㄴ [groupId]/
     ㄴ page.tsx
   ㄴ new/
     ㄴ page.tsx
   ㄴ page.tsx
 src/components/
-  ㄴ page-heading/ <-- 여러 라우트에서 쓰고 공통 상위가 src/app/ 이므로 공용 폴더에 둠.
+  ㄴ access-policy-group-editor/ <-- new/page.tsx 와 [groupId]/page.tsx 두 곳에서 쓰므로 공용 폴더에 둠.
+    ㄴ _utils/
+      ㄴ convert-policy-tree/ <-- access-policy-group-editor 와 그 서브 카테고리 폴더에서만 쓰므로 사용처는 한 곳임.
+    ㄴ index.ts
+    ㄴ access-policy-group-editor.tsx
 ```
 
 ## 파일을 만들거나 수정할 때 위치를 확인하세요
