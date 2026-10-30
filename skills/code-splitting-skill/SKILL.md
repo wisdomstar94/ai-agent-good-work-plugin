@@ -23,6 +23,8 @@ hooks/ <-- 종류별로 그룹핑한 폴더일 뿐 카테고리 폴더가 아님
 
 카테고리 폴더 안에 `_` 로 시작하는 그룹핑 폴더를 두고, 그 밑에 서브 카테고리 폴더를 둘 수 있습니다. 서브 카테고리 폴더도 카테고리 폴더의 한 종류이므로 카테고리 폴더 규칙이 똑같이 적용됩니다. 예시는 `파일 분리 규칙` 항목에 있습니다.
 
+`_` 그룹핑 폴더는 "그 카테고리 폴더 안에서만 쓴다" 는 표시입니다. 카테고리 바깥에도 노출하는 서브 카테고리 폴더(Provider 의 짝 훅 등)는 이름에서 `_` 만 뗀 그룹핑 폴더(`hooks/` 등) 밑에 둡니다. 그러면 `_hooks/` 밑은 그 카테고리 안에서만 쓰는 훅, `hooks/` 밑은 바깥에도 노출하는 훅이라는 것을 폴더 이름만 보고 알 수 있습니다. 예시는 `배럴 익스포트는 카테고리 폴더 바로 밑의 index.ts 에서만 허용합니다` 항목에 있습니다.
+
 ## 한 파일이 200줄을 넘지 않게 하세요
 
 한 파일이 200줄을 넘으면 이 스킬의 `파일 분리 규칙` 에 맞춰 파일을 분리해야 합니다.
@@ -45,7 +47,7 @@ components/
     ㄴ user-form.tsx
 ```
 
-- 서브 카테고리 폴더는 이름 앞에 `_`(언더스코어)가 붙는 그룹핑 폴더 밑에 두고, 상위 카테고리 폴더에서만 쓰는 것들을 담습니다. 위 예시에서 `user-basic-info-form/` 과 `user-detail-info-form/` 두 서브 카테고리 폴더는 `user-form.tsx` 에서만 쓰입니다.
+- 서브 카테고리 폴더는 이름 앞에 `_`(언더스코어)가 붙는 그룹핑 폴더 밑에 두고, 상위 카테고리 폴더에서만 쓰는 것들을 담습니다. (바깥에도 노출하는 짝은 예외로 `_` 를 뗀 그룹핑 폴더에 두며, `용어 정의` 의 `카테고리 폴더` 항목을 따릅니다.) 위 예시에서 `user-basic-info-form/` 과 `user-detail-info-form/` 두 서브 카테고리 폴더는 `user-form.tsx` 에서만 쓰입니다.
 - 서브 카테고리 폴더 밑의 파일도 200줄을 넘으면 같은 방식으로 다시 서브 카테고리로 분리합니다.
 
 ## 코드는 사용처 가까이에 두세요
@@ -169,18 +171,20 @@ src/functions/
   ㄴ index.ts <-- ❌ 여러 카테고리 폴더를 모아 내보내는 것 금지
 ```
 
-카테고리 폴더 자신의 `index.ts` 는 주인공과 함께 써야 하는 짝을 자기 서브 카테고리에서 다시 export 할 수 있습니다. 예를 들어 Provider 와 짝 훅은 사용처가 Provider 경로 하나로 둘 다 가져오게 합니다. 둘이 함께 쓰는 Context 는 export 하지 않아 Provider · 훅으로만 접근하게 합니다.
+카테고리 폴더 자신의 `index.ts` 는 주인공과 함께 써야 하는 짝을 자기 서브 카테고리에서 다시 export 할 수 있습니다. 예를 들어 Provider 와 짝 훅은 사용처가 Provider 경로 하나로 둘 다 가져오게 합니다. 짝은 바깥에도 노출되므로 `_` 를 뗀 그룹핑 폴더(`hooks/` 등) 밑에 둡니다. 둘이 함께 쓰는 Context 는 export 하지 않아 Provider · 훅으로만 접근하게 합니다.
 
 ```text
 src/providers/
   ㄴ toast-provider/
-    ㄴ _contexts/
-      ㄴ toast-context/ <-- toast-provider.tsx 와 use-toast 가 함께 쓴다. 바깥으로 export 하지 않는다.
-    ㄴ _hooks/
+    ㄴ _contexts/ <-- 이 카테고리 안에서만 쓰는 것. 바깥으로 export 하지 않는다.
+      ㄴ toast-context/ <-- toast-provider.tsx 와 use-toast 만 쓴다.
+    ㄴ hooks/ <-- 바깥에도 노출하는 것. _ 만 뗀 그룹핑 폴더.
       ㄴ use-toast/
-    ㄴ index.ts <-- ✅ export * from "./toast-provider"; export * from "./_hooks/use-toast";
+        ㄴ index.ts
+        ㄴ use-toast.ts
+    ㄴ index.ts <-- ✅ export * from "./hooks/use-toast"; export * from "./toast-provider";
     ㄴ toast-provider.tsx
 ```
 
-- 짝이 아닌 서브 카테고리(그 카테고리 안에서만 쓰는 `_utils/` 등)는 다시 export 하지 않습니다.
+- `_` 그룹핑 폴더 밑의 서브 카테고리(`_utils/` · `_contexts/` · `_hooks/` 등)는 다시 export 하지 않습니다. `export * from "./_hooks/use-toast"` 처럼 `_` 경로를 다시 export 해야 한다면, 그 그룹핑 폴더의 `_` 를 떼세요.
 - 다시 export 한 서브 카테고리 파일은 `index.ts` 를 통해 바깥에서도 쓰이므로, Next.js 처럼 서버 · 클라이언트 경계가 있는 환경에서는 그 파일에도 경계 지시어(`"use client"` 등)를 붙입니다.

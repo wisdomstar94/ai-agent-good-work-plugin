@@ -8,7 +8,7 @@
 ## 목차
 
 - [포함된 스킬](#포함된-스킬)
-- [자동 로드되는 언어 규칙](#자동-로드되는-언어-규칙)
+- [자동 로드되는 규칙](#자동-로드되는-규칙)
 - [Claude Code 에서 설치](#claude-code-에서-설치)
   - [리로드 · 재설치](#리로드--재설치)
 - [Codex 에서 설치](#codex-에서-설치)
@@ -20,7 +20,7 @@
 | 스킬 | 언제 적용되나 |
 | --- | --- |
 | `korean-language-skill` | 항상. 터미널 응답 · 질문 프롬프트 · 모든 산출물을 한국어로 작성 (세션 시작 훅으로 자동 주입) |
-| `work-skill` | 어떤 작업이든 시작하기 전. 작업계획서 작성 → 승인 → 작업 → 완료 보고 |
+| `work-skill` | 파일을 만들거나 고치거나 옮기는 작업을 시작하기 전. 작업계획서 작성 → 승인 → 작업 → 완료 보고 (세션 시작 훅으로 자동 주입) |
 | `question-skill` | 사용자에게 질문하거나 승인을 받을 때. 질문 프롬프트와 추천 선택지 사용 |
 | `code-splitting-skill` | 코드를 편집할 때. 카테고리 폴더 · 200줄 기준 분리 · 배럴 익스포트 제한 |
 | `code-comment-skill` | 주석을 추가 · 수정할 때. 주석 지양 · 로컬 PC 종속 내용 금지 |
@@ -28,12 +28,13 @@
 | `explain-diff-skill` | 코드 변경을 설명할 때. 배경 · 직관 · 코드 · 퀴즈로 구성한 HTML 변경점 설명서 |
 | `html-writing-skill` | 단일 HTML 파일로 산출물을 낼 때. 규격 · 다이어그램 규칙 |
 
-## 자동 로드되는 언어 규칙
+## 자동 로드되는 규칙
 
-`skills/korean-language-skill/SKILL.md` 의 본문은 세션이 시작될 때 `hooks/session-start.sh` 가 읽어 에이전트 컨텍스트에 자동으로 넣습니다. 문구를 바꿀 때는 **이 `SKILL.md` 한 곳만** 고치면 됩니다.
+`skills/korean-language-skill/SKILL.md` 와 `skills/work-skill/SKILL.md` 의 본문은 세션이 시작될 때 `hooks/session-start.sh` 가 읽어 에이전트 컨텍스트에 자동으로 넣습니다. 문구를 바꿀 때는 **각 `SKILL.md` 한 곳만** 고치면 됩니다.
 
+- 스킬은 에이전트가 직접 불러와야 본문이 보입니다. 에이전트가 작업이 간단하다고 판단해 스킬을 건너뛰면, 작업계획서를 쓸지 묻지 않고 바로 작업할 수 있습니다. 그래서 반드시 지켜야 하는 두 규칙은 처음부터 컨텍스트에 넣습니다.
 - **Claude Code** : 플러그인을 설치하면 별도 설정 없이 동작합니다.
-- **Codex** : 새 훅은 처음 한 번 사용자 승인이 필요합니다. 승인 전에는 훅이 실행되지 않아 언어 규칙이 자동 주입되지 않고, `korean-language-skill` 이 설명(description)에 따라 필요할 때만 적용됩니다.
+- **Codex** : 새 훅은 처음 한 번 사용자 승인이 필요합니다. 승인 전에는 훅이 실행되지 않아 두 규칙이 자동 주입되지 않고, 각 스킬이 설명(description)에 따라 필요할 때만 적용됩니다.
   - 대화형으로 `codex` 를 실행해 `/hooks` 에서 `good-work` 의 `SessionStart` 훅을 신뢰(trust) 처리합니다.
   - 훅 정의(`hooks/hooks.json`)를 바꾸면 다시 승인이 필요할 수 있습니다.
 
@@ -93,7 +94,7 @@ codex plugin add good-work@ai-agent-good-work
 └─ marketplace.json   # Codex 마켓플레이스
 hooks/
 ├─ hooks.json         # SessionStart 훅 등록 (두 에이전트 공용)
-└─ session-start.sh   # 언어 규칙 스킬 본문을 컨텍스트로 주입
+└─ session-start.sh   # 언어 규칙 · 작업 규칙 스킬 본문을 컨텍스트로 주입
 skills/               # 두 에이전트가 공유하는 스킬 (SKILL.md)
 ```
 
